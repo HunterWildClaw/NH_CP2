@@ -11,7 +11,7 @@ def financial_calc():
         starting_ammount=int(input("What's your starting ammount?: "))
         interest_rate_percent=int(input("And what's the interest rate percent?: "))
         years_spent_compounding=int(input("And finally, how many years will you spend compunding?: "))
-        for i in years_spent_compounding:
+        for i in range(years_spent_compounding):
             new_amount=starting_ammount*(interest_rate_percent/100+1)
         print(f"After {years_spent_compounding}, with an interest rate of {interest_rate_percent}, your starting ammount of ${starting_ammount} will become ${new_amount}!")
         
