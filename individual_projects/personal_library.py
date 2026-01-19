@@ -7,28 +7,6 @@ def input_helper(prompt = '> '):
     #take user input and return it
     return input(prompt).strip().lower()
 
-#make the add book function
-def add_book():
-    #get the name
-    name = input_helper("What's the title of your new book?: ")
-    #then the author
-    author = input_helper("And who's the author?: ")
-    #then show that youve added the book
-    print(f"Sweet! I've added {name.title()} by {author.title()}")
-    #now make it a dictionary
-    book = f'{name.title()} by {author.title()}'
-    #then return the book
-    return book
-
-#show books function
-def show_books(shelf):
-    #loop over all the books
-    i = 0
-    for book in shelf:
-        i += 1
-        #show the book
-        print(f'{i}. {book}')
-
 #make a search function
 def search(shelf):
     #have them give book title or author
@@ -43,6 +21,28 @@ def search(shelf):
             maybe.append(book)
     #return potential books
     return maybe
+
+#show books function
+def show_books(shelf):
+    #loop over all the books
+    i = 0
+    for book in shelf:
+        i += 1
+        #show the book
+        print(f'{i}. {book}')
+
+#make the add book function
+def add_book():
+    #get the name
+    name = input_helper("What's the title of your new book?: ")
+    #then the author
+    author = input_helper("And who's the author?: ")
+    #then show that youve added the book
+    print(f"Sweet! I've added {name.title()} by {author.title()}")
+    #now make it a dictionary
+    book = f'{name.title()} by {author.title()}'
+    #then return the book
+    return book
 
 #select book function
 def select(options):
@@ -115,3 +115,4 @@ def lib():
         input('Press Enter to continue')
         print('\033c')
 lib()
+#AAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH I"M FINALY DUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
