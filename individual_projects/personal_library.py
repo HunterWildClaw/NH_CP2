@@ -1,11 +1,12 @@
 #NH 2nd Personal Library
 #Create set for books
-import time as t
+
 books = set({})
 #user input function
 def input_helper(prompt = '> '):
     #take user input and return it
     return input(prompt).strip().lower()
+
 #book input function
 def add_book():
     #name = take user input "Title: "
@@ -18,6 +19,7 @@ def add_book():
     book = f'{name.title()} by {author.title()}'
     #return book
     return book
+
 #display books function
 def show_books(shelf):
     #loop over books
@@ -26,6 +28,7 @@ def show_books(shelf):
         i += 1
         #display "(current book title) by (current book author)"
         print(f'{i}. {book}')
+
 #search books function
 def search(shelf):
     #query = take user input "search"
@@ -40,6 +43,7 @@ def search(shelf):
             potential.append(book)
     #return potential books
     return potential
+
 #select book function
 def select(options):
     #display book options numbered
@@ -60,11 +64,12 @@ def select(options):
             #ask again
             print('Please choose by number!')
             continue
+
 #main function
 def lib():
     while True:
         #display choices
-        print("Hello and welcome to your own personal library! Here are your options: \n1. Add\n2. View\n3. Remove\n4. Search\n5. Exit")
+        print("Hello and welcome to your own personal library! Here are your options: \n1. Add\n2. View\n3. Remove\n4. Search\n5. Or Exit")
         #take user input for one of the choices
         while True:
             choice = input_helper()
