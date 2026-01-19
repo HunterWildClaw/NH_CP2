@@ -61,7 +61,7 @@ def select(options):
             print('Please choose by number!')
             continue
 #main function
-def main():
+def lib():
     while True:
         #display choices
         print("Hello and welcome to your own personal library! Here are your options: \n1. Add\n2. View\n3. Remove\n4. Search\n5. Exit")
@@ -109,4 +109,4 @@ def main():
         #return to top of function
         input('Press Enter to Continue: ')
         print('\033c')
-main()
+lib()
