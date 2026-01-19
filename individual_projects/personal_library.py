@@ -98,7 +98,7 @@ def main():
         elif choice in ['4','search']:
             #book search
             searched = search(books)
-            #display books
+            #display the books
             show_books(searched)
         #otherwise if choice is exit
         elif choice in ['5','exit']:
