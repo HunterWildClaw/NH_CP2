@@ -3,23 +3,23 @@
 import time as t
 books = set({})
 #user input function
-def uInput(prompt = '> '):
-    #take user input and clean it and return it
+def input_helper(prompt = '> '):
+    #take user input and return it
     return input(prompt).strip().lower()
 #book input function
-def bookInput():
+def add_book():
     #name = take user input "Title: "
-    name = uInput('Title: ')
+    name = input_helper("What's the title of your new book?: ")
     #author = take user input "Author: "
-    author = uInput('Author: ')
+    author = input_helper("And who's the author?: ")
     #display "Added (title) by (author)"
-    print(f'Added {name.title()} by {author.title()}')
+    print(f"Sweet! I've added {name.title()} by {author.title()}")
     #book = dictionary containing title: name and author: author
     book = f'{name.title()} by {author.title()}'
     #return book
     return book
 #display books function
-def bookDisplay(shelf):
+def show_books(shelf):
     #loop over books
     i = 0
     for book in shelf:
@@ -29,7 +29,7 @@ def bookDisplay(shelf):
 #search books function
 def search(shelf):
     #query = take user input "search"
-    query = uInput("Search: ")
+    query = input_helper("Input name of book or author: ")
     #create list for potential books
     potential = []
     #loop over books
@@ -43,10 +43,10 @@ def search(shelf):
 #select book function
 def select(options):
     #display book options numbered
-    bookDisplay(options)
+    show_books(options)
     while True:
         #take user input "choose book (by number) or 0 to exit: "
-        choice = uInput('Choose book (by number) or 0 to exit: ')
+        choice = input_helper('Choose book (by number) or 0 to exit: ')
         #if choice is 0:
         if choice == '0':
             #exit function
@@ -64,22 +64,22 @@ def select(options):
 def main():
     while True:
         #display choices
-        print("1. Add\n2. View\n3. Remove\n4. Search\n5. Exit")
+        print("Hello and welcome to your own personal library! Here are your options: \n1. Add\n2. View\n3. Remove\n4. Search\n5. Exit")
         #take user input for one of the choices
         while True:
-            choice = uInput()
+            choice = input_helper()
             if choice in ['1','add','2','view','3','remove','4','search','5','exit']:
                 break
             else:
-                print('Please select one of the choices!')
+                print('QUIT TROLLING!!!!\nPlease select one of the choices!')
         #if choice is add
         if choice in ['1','add']:
             #add (book input) to books
-            books.add(bookInput())
+            books.add(add_book())
         #otherwise if choice is view
         elif choice in ['2','view']:
             #display books
-            bookDisplay(books)
+            show_books(books)
         #otherwise if choice is remove
         elif choice in ['3','remove']:
             #book search
@@ -99,14 +99,14 @@ def main():
             #book search
             searched = search(books)
             #display books
-            bookDisplay(searched)
+            show_books(searched)
         #otherwise if choice is exit
         elif choice in ['5','exit']:
             #tell the user goodbye
-            print('\033cGoodbye!')
+            print('\033ccya!')
             #exit program
             return
         #return to top of function
-        input('Press ENTER to Continue > ')
+        input('Press Enter to Continue: ')
         print('\033c')
 main()
