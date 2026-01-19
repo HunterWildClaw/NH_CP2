@@ -1,48 +1,48 @@
 #NH 2nd Personal Library
-#Create set for books
+#Create a set for the books
 
 books = set({})
-#user input function
+#make a ui function as the helper function
 def input_helper(prompt = '> '):
     #take user input and return it
     return input(prompt).strip().lower()
 
-#book input function
+#make the add book function
 def add_book():
-    #name = take user input "Title: "
+    #get the name
     name = input_helper("What's the title of your new book?: ")
-    #author = take user input "Author: "
+    #then the author
     author = input_helper("And who's the author?: ")
-    #display "Added (title) by (author)"
+    #then show that youve added the book
     print(f"Sweet! I've added {name.title()} by {author.title()}")
-    #book = dictionary containing title: name and author: author
+    #now make it a dictionary
     book = f'{name.title()} by {author.title()}'
-    #return book
+    #then return the book
     return book
 
-#display books function
+#show books function
 def show_books(shelf):
-    #loop over books
+    #loop over all the books
     i = 0
     for book in shelf:
         i += 1
-        #display "(current book title) by (current book author)"
+        #show the book
         print(f'{i}. {book}')
 
-#search books function
+#make a search function
 def search(shelf):
-    #query = take user input "search"
-    query = input_helper("Input name of book or author: ")
+    #have them give book title or author
+    search = input_helper("Input name of book or author: ")
     #create list for potential books
-    potential = []
+    maybe = []
     #loop over books
     for book in shelf:
         #if current book title contains query:
-        if query in book.lower():
+        if search in book.lower():
             #add current book to potential books
-            potential.append(book)
+            maybe.append(book)
     #return potential books
-    return potential
+    return maybe
 
 #select book function
 def select(options):
