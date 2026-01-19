@@ -32,7 +32,7 @@ def show_books(shelf):
 #make a search function
 def search(shelf):
     #have them give book title or author
-    search = input_helper("Input name of book or author: ")
+    search = input_helper("Input name of book or author: ") #Yes i said input get over it  
     #create list for potential books
     maybe = []
     #loop over books
@@ -62,7 +62,7 @@ def select(options):
         #otherwise:
         except:
             #ask again
-            print('Please choose by number!')
+            print('Please choose by number! Not the actual title!')
             continue
 
 #main function
@@ -112,6 +112,6 @@ def lib():
             #exit program
             return
         #return to top of function
-        input('Press Enter to Continue: ')
+        input('Press Enter to continue')
         print('\033c')
 lib()
