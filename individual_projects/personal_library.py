@@ -98,7 +98,7 @@ def lib():
                 continue
             #remove (chosen) from books
             books.remove(chosen)
-            print(f'Removed {chosen}')
+            print(f"I've removed {chosen}")
         #otherwise if choice is search
         elif choice in ['4','search']:
             #book search
@@ -115,4 +115,4 @@ def lib():
         input('Press Enter to continue')
         print('\033c')
 lib()
-#AAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH I"M FINALY DUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+#AAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH I'M FINALY DUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
