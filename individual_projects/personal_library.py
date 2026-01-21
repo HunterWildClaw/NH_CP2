@@ -3,14 +3,14 @@
 
 books = set({})
 #make a ui function as the helper function
-def input_helper(prompt = '> '):
+def inputHelper(prompt = '> '):
     #take user input and return it
     return input(prompt).strip().lower()
 
 #make a search function
 def search(shelf):
     #have them give book title or author
-    search = input_helper("Input name of book or author: ") #Yes i said input get over it  
+    search = inputHelper("Input name of book or author: ") #Yes i said input get over it  
     #create list for potential books
     maybe = []
     #loop over books
@@ -23,7 +23,7 @@ def search(shelf):
     return maybe
 
 #show books function
-def show_books(shelf):
+def showBooks(shelf):
     #loop over all the books
     i = 0
     for book in shelf:
@@ -32,11 +32,11 @@ def show_books(shelf):
         print(f'{i}. {book}')
 
 #make the add book function
-def add_book():
+def addBook():
     #get the name
-    name = input_helper("What's the title of your new book?: ")
+    name = inputHelper("What's the title of your new book?: ")
     #then the author
-    author = input_helper("And who's the author?: ")
+    author = inputHelper("And who's the author?: ")
     #then show that youve added the book
     print(f"Sweet! I've added {name.title()} by {author.title()}")
     #now make it a dictionary
@@ -47,10 +47,10 @@ def add_book():
 #select book function
 def select(options):
     #display book options numbered
-    show_books(options)
+    showBooks(options)
     while True:
         #take user input "choose book (by number) or 0 to exit: "
-        choice = input_helper('Choose book (by number) or 0 to exit: ')
+        choice = inputHelper('Choose book (by number) or 0 to exit: ')
         #if choice is 0:
         if choice == '0':
             #exit function
@@ -72,7 +72,7 @@ def lib():
         print("Hello and welcome to your own personal library! Here are your options: \n1. Add\n2. View\n3. Remove\n4. Search\n5. Or Exit")
         #take user input for one of the choices
         while True:
-            choice = input_helper()
+            choice = inputHelper()
             if choice in ['1','add','2','view','3','remove','4','search','5','exit']:
                 break
             else:
@@ -80,11 +80,11 @@ def lib():
         #if choice is add
         if choice in ['1','add']:
             #add (book input) to books
-            books.add(add_book())
+            books.add(addBook())
         #otherwise if choice is view
         elif choice in ['2','view']:
             #display books
-            show_books(books)
+            showBooks(books)
         #otherwise if choice is remove
         elif choice in ['3','remove']:
             #book search
@@ -98,13 +98,13 @@ def lib():
                 continue
             #remove (chosen) from books
             books.remove(chosen)
-            print(f"I've removed {chosen}")
+            print(f'Removed {chosen}')
         #otherwise if choice is search
         elif choice in ['4','search']:
             #book search
             searched = search(books)
             #display the books
-            show_books(searched)
+            showBooks(searched)
         #otherwise if choice is exit
         elif choice in ['5','exit']:
             #tell the user goodbye
@@ -115,4 +115,4 @@ def lib():
         input('Press Enter to continue')
         print('\033c')
 lib()
-#AAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH I'M FINALY DUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+#AAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH I"M FINALY DUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
