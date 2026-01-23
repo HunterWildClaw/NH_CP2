@@ -9,7 +9,7 @@ def main():
         password_upper=int(input("Does it need uppercase letters? 1 for yes and 2 for no"))
         password_number=int(input("Does it need numbers? 1 for yes and 2 for no"))
         password_special_char=int(input("Do you want special characters? 1 for yes and 2 for no"))
-        print("")
+        print("Here are the available passwords:")
 
 
 
