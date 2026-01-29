@@ -1,6 +1,6 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
-from typing import List
+from typing import List, Dict
 import random
 
 class Race(Enum):
@@ -30,6 +30,37 @@ class Class(Enum):
     MONK = "Monk"
     DRUID = "Druid"
 
+# Racial bonuses
+RACE_ATTRIBUTES = {
+    Race.HUMAN: {"strength": 2, "dexterity": 1, "constitution": 2, "intelligence": 1, "wisdom": 1, "charisma": 2},
+    Race.ORC: {"strength": 3, "dexterity": 0, "constitution": 2, "intelligence": 0, "wisdom": 1, "charisma": 0},
+    Race.DWARF: {"strength": 1, "dexterity": 0, "constitution": 3, "intelligence": 1, "wisdom": 2, "charisma": 0},
+    Race.NIGHT_ELF: {"strength": 0, "dexterity": 3, "constitution": 1, "intelligence": 1, "wisdom": 2, "charisma": 1},
+    Race.TAUREN: {"strength": 3, "dexterity": 0, "constitution": 3, "intelligence": 0, "wisdom": 1, "charisma": 1},
+    Race.GNOME: {"strength": 0, "dexterity": 2, "constitution": 1, "intelligence": 3, "wisdom": 0, "charisma": 1},
+    Race.TROLL: {"strength": 2, "dexterity": 2, "constitution": 1, "intelligence": 0, "wisdom": 0, "charisma": 0},
+    Race.BLOOD_ELF: {"strength": 0, "dexterity": 2, "constitution": 1, "intelligence": 2, "wisdom": 1, "charisma": 3},
+    Race.DRAENEI: {"strength": 1, "dexterity": 1, "constitution": 2, "intelligence": 2, "wisdom": 2, "charisma": 1},
+    Race.GOBLIN: {"strength": 1, "dexterity": 3, "constitution": 0, "intelligence": 2, "wisdom": 0, "charisma": 1},
+    Race.WORGEN: {"strength": 2, "dexterity": 2, "constitution": 2, "intelligence": 1, "wisdom": 1, "charisma": 1},
+    Race.PANDAREN: {"strength": 2, "dexterity": 1, "constitution": 3, "intelligence": 1, "wisdom": 2, "charisma": 2},
+}
+
+# Class skills
+CLASS_SKILLS = {
+    Class.WARRIOR: ["Slash", "Shield Bash", "Whirlwind Attack", "Taunt"],
+    Class.PALADIN: ["Holy Strike", "Divine Shield", "Consecration", "Blessing"],
+    Class.HUNTER: ["Aimed Shot", "Multi-Shot", "Pet Attack", "Disengage"],
+    Class.ROGUE: ["Backstab", "Poison Strike", "Stealth", "Evasion"],
+    Class.PRIEST: ["Holy Blast", "Mind Flay", "Heal", "Power Word Shield"],
+    Class.DEATH_KNIGHT: ["Death Strike", "Death Coil", "Unholy Aura", "Anti-Magic Shell"],
+    Class.SHAMAN: ["Lightning Bolt", "Earthquake", "Totem", "Chain Heal"],
+    Class.MAGE: ["Fireball", "Frost Bolt", "Arcane Blast", "Teleport"],
+    Class.WARLOCK: ["Chaos Bolt", "Drain Life", "Summon Demon", "Curse"],
+    Class.MONK: ["Tiger Strike", "Crane Kick", "Chi Burst", "Meditation"],
+    Class.DRUID: ["Moonfire", "Entangle", "Rejuvenation", "Wild Shape"],
+}
+
 @dataclass
 class Character:
     name: str
@@ -39,6 +70,13 @@ class Character:
     experience: int = 0
     health: int = 100
     mana: int = 100
+    strength: int = 10
+    dexterity: int = 10
+    constitution: int = 10
+    intelligence: int = 10
+    wisdom: int = 10
+    charisma: int = 10
+    skills: List[str] = field(default_factory=list)
     
     def __str__(self):
         return f"{self.name} - {self.race.value} {self.char_class.value} (Level {self.level})"
@@ -135,7 +173,7 @@ class Adventure:
         }
         
         print("\nWhere would you like to explore?")
-        for key, (loc, desc) in locations.items():
+        for key, (loc, _) in locations.items():
             print(f"{key}. {loc}")
         
         choice = input("Choose location: ").strip()
@@ -210,6 +248,19 @@ class CharacterCreator:
     
     def create_character(self, name: str, race: Race, char_class: Class) -> Character:
         char = Character(name, race, char_class)
+        
+        # Apply racial bonuses
+        race_bonus = RACE_ATTRIBUTES[race]
+        char.strength += race_bonus["strength"]
+        char.dexterity += race_bonus["dexterity"]
+        char.constitution += race_bonus["constitution"]
+        char.intelligence += race_bonus["intelligence"]
+        char.wisdom += race_bonus["wisdom"]
+        char.charisma += race_bonus["charisma"]
+        
+        # Assign class skills
+        char.skills = CLASS_SKILLS[char_class].copy()
+        
         self.characters.append(char)
         return char
     
@@ -226,6 +277,17 @@ class CharacterCreator:
 def display_options(options: dict):
     for key, value in options.items():
         print(f"  {key}: {value}")
+
+def display_character_details(char: Character):
+    print(f"\n{'='*50}")
+    print(f"Character: {char.name}")
+    print(f"Race: {char.race.value} | Class: {char.char_class.value}")
+    print(f"\nAttributes:")
+    print(f"  Strength: {char.strength} | Dexterity: {char.dexterity}")
+    print(f"  Constitution: {char.constitution} | Intelligence: {char.intelligence}")
+    print(f"  Wisdom: {char.wisdom} | Charisma: {char.charisma}")
+    print(f"\nSkills: {', '.join(char.skills)}")
+    print(f"{'='*50}\n")
 
 if __name__ == "__main__":
     creator = CharacterCreator()
@@ -257,6 +319,7 @@ if __name__ == "__main__":
             
             char = creator.create_character(name, race, char_class)
             print(f"✓ Created: {char}")
+            display_character_details(char)
         
         elif choice == "2":
             chars = creator.list_characters()
