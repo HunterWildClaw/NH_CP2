@@ -3,6 +3,7 @@ from enum import Enum
 from typing import List, Dict
 import random
 
+#Buckle up!
 class Race(Enum):
     HUMAN = "Human"
     ORC = "Orc"
