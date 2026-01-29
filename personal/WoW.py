@@ -25,6 +25,100 @@ import random
 
 
 
+def visit_marketplace(self):
+    """Buy weapons and armor from the marketplace"""
+    print("\n🏪 Welcome to the Marketplace!")
+    print("=" * 50)
+    
+    print("Available Weapons:")
+    for weapon, details in WEAPONS.items():
+        print(f"{weapon} - Cost: {details['cost']} Gold, Damage: {details['damage']}, Rarity: {details['rarity']}")
+    
+    print("\nAvailable Armor:")
+    for armor, details in ARMOR.items():
+        print(f"{armor} - Cost: {details['cost']} Gold, Defense: {details['defense']}, Rarity: {details['rarity']}")
+    
+    print(f"{len(WEAPONS) + len(ARMOR) + 1}. Leave Marketplace")
+    
+    choice = input("Select item to buy (number): ").strip()
+    
+    if choice.isdigit() and 1 <= int(choice) <= len(WEAPONS) + len(ARMOR):
+        item_index = int(choice) - 1
+        if item_index < len(WEAPONS):
+            item_name = list(WEAPONS.keys())[item_index]
+            item_details = WEAPONS[item_name]
+        else:
+            item_index -= len(WEAPONS)
+            item_name = list(ARMOR.keys())[item_index]
+            item_details = ARMOR[item_name]
+        
+        if self.gold >= item_details["cost"]:
+            self.gold -= item_details["cost"]
+            self.character.add_item({"name": item_name, "rarity": item_details["rarity"], "value": item_details["cost"]})
+            print(f"✓ Bought {item_name} for {item_details['cost']} Gold!")
+        else:
+            print("✗ Not enough gold!")
+    else:
+        print("Safe trading!")
+    
+    print("=" * 50)
+
+def explore(self):
+    unlocked_locations = self.get_unlocked_locations()
+    
+    print("\nWhere would you like to explore?")
+    for key, (loc, _, level_req) in unlocked_locations.items():
+        print(f"{key}. {loc} (Level {level_req}+)")
+    
+    choice = input("Choose location: ").strip()
+    
+    if choice in unlocked_locations:
+        location, description, _ = unlocked_locations[choice]
+        self.current_location = location
+        print(f"\n📍 You arrive at {location}")
+        print(f"   {description}")
+        
+        # Check for boss
+        if location in ZONE_BOSSES and not self.boss_defeated.get(location, False):
+            print(f"\n⚠️  You sense a powerful presence... {ZONE_BOSSES[location]['name']} lurks here!")
+        
+        if random.random() > 0.5:
+            print("\nYou sense danger nearby...")
+            self.encounter_enemy()
+        else:
+            print("\nThe area is peaceful. You rest here.")
+            self.character.heal(20)
+            self.character.mana = min(self.character.mana + 30, 100)
+    else:
+        print("Invalid location or not yet unlocked.")
+    
+    # Heal character when not in combat
+    self.character.heal(10)
+    self.character.mana = min(self.character.mana + 10, 100)
+
+
+def level_up(self):
+    self.level += 1
+    self.experience = 0
+    self.max_health = getattr(self, 'max_health', 100) + 50
+    self.max_mana = getattr(self, 'max_mana', 100) + 50
+    self.health = self.max_health
+    self.mana = self.max_mana
+
+def unlock_skills(self):
+    """Unlock new skills based on character level"""
+    base_skills = CLASS_SKILLS[self.char_class]
+    skill_unlock_thresholds = {
+        1: 0,  # All base skills available at level 1
+        2: 1,  # First skill unlocked at level 2
+        3: 2,  # Second skill unlocked at level 3
+        4: 3,  # Third skill unlocked at level 4
+        5: 4,  # All skills unlocked at level 5
+    }
+    
+    max_skill_index = skill_unlock_thresholds.get(self.level, len(base_skills) - 1)
+    self.skills = base_skills[:max_skill_index + 1]
+
 # New mobs and loot for higher level zones
 NEW_ENEMIES = {
     "Kun-Lai Summit": [
@@ -1009,9 +1103,3 @@ if __name__ == "__main__":
         
         else:
             print("Invalid choice. Try again.")
-
-def level_up(self):
-    self.level += 1
-    self.experience = 0
-    self.health += 50
-    self.mana += 50
