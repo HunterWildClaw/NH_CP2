@@ -1,9 +1,210 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import List, Dict
 import random
 
-#Buckle up!
+
+
+# New mobs and loot for higher level zones
+NEW_ENEMIES = {
+    "Kun-Lai Summit": [
+        {"name": "Snow Beast", "health": 80, "damage_range": (15, 30), "drops": [
+            {"name": "Frosted Fang", "rarity": "rare", "value": 100},
+            {"name": "Ice Crystal", "rarity": "common", "value": 50},
+        ]},
+        {"name": "Mountain Yeti", "health": 100, "damage_range": (20, 35), "drops": [
+            {"name": "Yeti Pelt", "rarity": "rare", "value": 120},
+            {"name": "Yeti Claw", "rarity": "common", "value": 60},
+        ]},
+    ],
+    "Dread Wastes": [
+        {"name": "Corrupted Warlord", "health": 120, "damage_range": (25, 40), "drops": [
+            {"name": "Warlord's Blade", "rarity": "epic", "value": 250},
+            {"name": "Corrupted Essence", "rarity": "rare", "value": 150},
+        ]},
+        {"name": "Sha Beast", "health": 150, "damage_range": (30, 50), "drops": [
+            {"name": "Sha Heart", "rarity": "epic", "value": 300},
+            {"name": "Dark Energy", "rarity": "rare", "value": 200},
+        ]},
+    ],
+}
+
+def get_new_enemies(self):
+    """Return new enemies based on the current location."""
+    return NEW_ENEMIES.get(self.current_location, [])
+
+# Modify the encounter_enemy method to include new enemies
+def encounter_enemy(self):
+    enemies = get_new_enemies()
+    if not enemies:
+        enemies = ["Hozen", "Sha Spawn", "Quillen", "Local Brigand"]
+    
+    enemy = random.choice(enemies)
+    enemy_health = enemy["health"]
+    
+    print(f"\n⚔️ A wild {enemy['name']} appears!")
+    
+    while enemy_health > 0 and self.character.health > 0:
+        print(f"\n{enemy['name']} Health: {enemy_health}")
+        self.character.display_skills()  # Show skills and health/mana
+        print("1. Attack")
+        print("2. Use Ability")
+        print("3. Run Away")
+        
+        choice = input("Choose action: ").strip()
+        
+        if choice == "1":
+            damage = random.randint(10, 25)
+            enemy_health -= damage
+            print(f"✓ You dealt {damage} damage!")
+        
+        elif choice == "2":
+            if self.character.skills:
+                self.character.display_skills()  # Show skills before using
+                skill_choice = input("Choose skill number: ").strip()
+                try:
+                    skill_index = int(skill_choice) - 1
+                    if 0 <= skill_index < len(self.character.skills):
+                        skill_name = self.character.skills[skill_index]
+                        if self.character.mana >= 20:  # Assuming all skills cost 20 mana
+                            damage = random.randint(20, 35)
+                            enemy_health -= damage
+                            self.character.mana -= 20
+                            print(f"✓ Ability '{skill_name}' used! {damage} damage dealt!")
+                        else:
+                            print("✗ Not enough mana!")
+                            continue
+                    else:
+                        print("Invalid skill number.")
+                except ValueError:
+                    print("Invalid input.")
+                continue
+            
+            else:
+                print("✗ No skills available!")
+                continue
+        
+        elif choice == "3":
+            print("You fled from combat!")
+            return
+        
+        if enemy_health > 0:
+            enemy_damage = random.randint(*enemy["damage_range"])
+            if self.character.take_damage(enemy_damage):
+                print(f"✗ {enemy['name']} dealt {enemy_damage} damage!")
+                print("☠️ You have been defeated!")
+                self.game_over = True
+                return
+            else:
+                print(f"✗ {enemy['name']} dealt {enemy_damage} damage!")
+    
+    if enemy_health <= 0:
+        reward = random.randint(50, 150)
+        self.character.gain_experience(reward)
+        self.character.unlock_skills()  # Check for skill unlocks after combat
+        # Drop items
+        drops = enemy["drops"]
+        if drops:
+            dropped_item = random.choice(drops)
+            self.character.add_item(dropped_item)
+            rarity_color = "🟡" if dropped_item["rarity"] == "common" else "⭐"
+            print(f"{rarity_color} {enemy['name']} dropped: {dropped_item['name']}")
+
+def display_skills(self):
+    """Display available skills and current health/mana."""
+    print("Available Skills:")
+    for i, skill in enumerate(self.skills, 1):
+        print(f"{i}. {skill}")
+    print(f"Current Health: {self.health}/100 | Current Mana: {self.mana}/100")
+
+# Modify the encounter_enemy method to show skills
+def encounter_enemy(self):
+    enemies = ["Hozen", "Sha Spawn", "Quillen", "Local Brigand"]
+    enemy = random.choice(enemies)
+    enemy_health = random.randint(20, 50)
+    
+    print(f"\n⚔️ A wild {enemy} appears!")
+    
+    while enemy_health > 0 and self.character.health > 0:
+        print(f"\n{enemy} Health: {enemy_health}")
+        self.character.display_skills()  # Show skills and health/mana
+        print("1. Attack")
+        print("2. Use Ability")
+        print("3. Run Away")
+        
+        choice = input("Choose action: ").strip()
+        
+        if choice == "1":
+            damage = random.randint(10, 25)
+            enemy_health -= damage
+            print(f"✓ You dealt {damage} damage!")
+        
+        elif choice == "2":
+            if self.character.skills:
+                self.character.display_skills()  # Show skills before using
+                skill_choice = input("Choose skill number: ").strip()
+                try:
+                    skill_index = int(skill_choice) - 1
+                    if 0 <= skill_index < len(self.character.skills):
+                        skill_name = self.character.skills[skill_index]
+                        if self.character.mana >= 20:  # Assuming all skills cost 20 mana
+                            damage = random.randint(20, 35)
+                            enemy_health -= damage
+                            self.character.mana -= 20
+                            print(f"✓ Ability '{skill_name}' used! {damage} damage dealt!")
+                        else:
+                            print("✗ Not enough mana!")
+                            continue
+                    else:
+                        print("Invalid skill number.")
+                except ValueError:
+                    print("Invalid input.")
+                continue
+            
+            else:
+                print("✗ No skills available!")
+                continue
+        
+        elif choice == "3":
+            print("You fled from combat!")
+            return
+        
+        if enemy_health > 0:
+            enemy_damage = random.randint(5, 15)
+            if self.character.take_damage(enemy_damage):
+                print(f"✗ {enemy} dealt {enemy_damage} damage!")
+                print("☠️ You have been defeated!")
+                self.game_over = True
+                return
+            else:
+                print(f"✗ {enemy} dealt {enemy_damage} damage!")
+    
+    if enemy_health <= 0:
+        reward = random.randint(50, 150)
+        self.character.gain_experience(reward)
+        self.character.unlock_skills()  # Check for skill unlocks after combat
+        print(f"\n✓ Victory! Gained {reward} experience!")
+
 class Race(Enum):
     HUMAN = "Human"
     ORC = "Orc"
@@ -174,6 +375,23 @@ class Character:
     
     def add_item(self, item: Dict):
         self.inventory.append(item)
+
+WEAPONS = {
+    "Iron Sword": {"cost": 50, "damage": 5, "rarity": "common"},
+    "Steel Mace": {"cost": 75, "damage": 10, "rarity": "common"},
+    "Enchanted Bow": {"cost": 100, "damage": 15, "rarity": "rare"},
+    "Flaming Axe": {"cost": 150, "damage": 25, "rarity": "rare"},
+    "Shardblade": {"cost": 300, "damage": 50, "rarity": "epic"},
+}
+
+ARMOR = {
+    "Leather Armor": {"cost": 40, "defense": 3, "rarity": "common"},
+    "Iron Plate": {"cost": 80, "defense": 7, "rarity": "common"},
+    "Steel Chainmail": {"cost": 120, "defense": 10, "rarity": "rare"},
+    "Enchanted Robes": {"cost": 150, "defense": 12, "rarity": "rare"},
+    "Dragon Scale Armor": {"cost": 300, "defense": 20, "rarity": "epic"},
+}
+
 
 class Adventure:
     LOCATIONS = {
@@ -516,7 +734,7 @@ class Adventure:
     
     def visit_inn(self):
         print("\n🏨 Welcome to the Inn!")
-        print("1. Rest (Recover 50 HP and 50 Mana) - 10 Gold")
+        print("1. Rest (Recover 50 HP and 50 Mana)")
         print("2. Hear Rumors")
         print("3. Accept Quest")
         print("4. Complete Quest")
@@ -791,3 +1009,9 @@ if __name__ == "__main__":
         
         else:
             print("Invalid choice. Try again.")
+
+def level_up(self):
+    self.level += 1
+    self.experience = 0
+    self.health += 50
+    self.mana += 50
