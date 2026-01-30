@@ -437,6 +437,8 @@ class Character:
     experience: int = 0
     health: int = 100
     mana: int = 100
+    max_health: int = 100
+    max_mana: int = 100
     strength: int = 10
     dexterity: int = 10
     constitution: int = 10
@@ -457,8 +459,10 @@ class Character:
     def level_up(self):
         self.level += 1
         self.experience = 0
-        self.health += 10
-        self.mana += 10
+        self.max_health += 50
+        self.max_mana += 50
+        self.health = self.max_health
+        self.mana = self.max_mana
     
     def take_damage(self, amount: int):
         self.health -= amount
