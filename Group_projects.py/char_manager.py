@@ -6,7 +6,7 @@ characters={}
 for i in characters:
    items_in_inv=[]
    inv_weight=items_in_inv(len)
-   weight_limit =50
+   weight_limit=1000
 
 
 races = (
