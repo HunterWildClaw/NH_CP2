@@ -1,13 +1,11 @@
 #NH, BR 2nd character creator
 import random
 
-
 characters={}
 for i in characters:
    items_in_inv=[]
    inv_weight=items_in_inv(len)
-   weight_limit=1000
-
+   weight_limit =50
 
 races = (
    {
@@ -161,7 +159,7 @@ def character_creator(characters, races, classes):
 #   Infinite loop
    while True:
 #       Ask for name
-       character_name=input("What name do you want for your character? ")
+       character_name=input("What name do you want for your character? ").strip().title()
 #       If that name exists
        if character_name in characters:
 #           Tell them that they must try again with a name not already used
@@ -202,16 +200,19 @@ def character_creator(characters, races, classes):
    for i in range(len(classes)):
        if character_class == i:
            character_class = classes[i]["name"]
+   for i in range(len(skills)):
+       if character_skill == i:
+           character_skill = classes[i]
    characters[character_name] = {
 "race": character_race,
 "class": character_class,
+"skill": character_skill,
 "strength": strength,
-"intelligencer": intelligence,
+"intelligence": intelligence,
 "wisdom":  wisdom,
 "charisma": charisma,
 "dexterity": dexterity,
-"constitution": constitution,
-"inventory": {}
+"constitution": constitution
 }
 #search character function
 def search_character(characters):
@@ -234,7 +235,7 @@ def manage_inventory(items_in_inv, inv_weight, weight_limit):
            if inv_weight >= weight_limit:
                print("🚫You can't add anything - inventory is full!🚫")
            else:
-               item_name = input("Enter item name: ").strip()
+               item_name = input("Enter item name: ").strip().title()
                try:
                    item_weight = int(input("Enter item weight: ").strip())
                    if inv_weight + item_weight <= weight_limit:
@@ -332,7 +333,7 @@ def main(characters, races, classes):
 #   Infinite loop
    while True:
 #       Ask the user if they want to 1. Quit 2. Create a character 3. Find a character
-       check = input("Do you want to: \n1. Create a character \n2. Find a character \n3. Manage inventory \n4. Quit \n")
+       check = input("Do you want to: \n1. Create a character \n2. Find a character \n3. Manage inventory \n4. Quit \n").strip()
 #       If they chose 1
        if check == '1':
            character_creator(characters, races, classes)
