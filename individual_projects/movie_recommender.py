@@ -5,8 +5,29 @@ import csv
 #Welcome the user
 print("Welcome to my movie recommender!")
 
+# read the movie list
+def read_movies():
+    with open("individual_projects\movies_list.csv", "r") as movies:
+        reader=csv.reader(movies)
+        header=next(reader)
+        movies=[]
+        for line in reader:
+            movies.append(
+                {
+                    header[0]: line[0].strip(),
+                    header[1]: line[1].strip(),
+                    header[2]: line[2].strip(),
+                    header[3]: line[3].strip(),
+                    header[4]: int(line[4].strip()),
+                    header[5]: line[5].strip()
+                }
+            )
+        
+        return movies
+
 #make main function
-def main(movies):
+def main():
+    movies=read_movies()
     #while loop it
     while True:
         #Give them their options
@@ -28,6 +49,7 @@ def main(movies):
             print("Byeeeeeeeeeeee!")
             break
 
+
 #def search function
 def search(movies):
     #Get user input
@@ -36,10 +58,16 @@ def search(movies):
         if search in movies:
             print(i)
 
+
 #Def recommender function
 def recommendation(movies):
     print("sup")
 
+
 # Def movie lister function
 def movie_list(movies):
-    print("sup")
+    for i in movies:
+        print(i)
+
+
+main()
