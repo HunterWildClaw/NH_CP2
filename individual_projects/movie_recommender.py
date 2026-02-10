@@ -7,7 +7,7 @@ print("Welcome to my movie recommender!")
 
 # read the movie list
 def read_movies():
-    with open("individual_projects\movies_list.csv", "r") as movies:
+    with open("individual_projects\\movies_list.csv", "r") as movies:
         reader=csv.reader(movies)
         header=next(reader)
         movies=[]
@@ -68,6 +68,4 @@ def recommendation(movies):
 def movie_list(movies):
     for i in movies:
         print(i)
-
-
 main()

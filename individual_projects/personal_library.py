@@ -66,10 +66,10 @@ def select(options):
             continue
 
 #main function
-def lib():
+def main():
     while True:
         #display choices
-        print("Hello and welcome to your own personal library! Here are your options: \n1. Add\n2. View\n3. Remove\n4. Search\n5. Or Exit")
+        print("Hello and welcome to your own personal library!\nHere are your options: \n1. Add\n2. View\n3. Remove\n4. Search\n5. Or Exit")
         #take user input for one of the choices
         while True:
             choice = inputHelper()
@@ -114,5 +114,4 @@ def lib():
         #return to top of function
         input('Press Enter to continue')
         print('\033c')
-lib()
-#AAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH I"M FINALY DUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+main()
