@@ -28,6 +28,7 @@ def search(movies):
     query = input("Give title, genre, actors, or movie director: ").lower()
     #Set it to false
     found = False
+    #Give em their results
     print("\nSearch Results\n")
     for movie in movies:
         # check every value in the movie's dictionary (title, genre, etc.)
@@ -51,6 +52,7 @@ def recommendation(movies):
             if count >= 5: # Limit recommendations to 5 to avoid flooding
                 break
     if count == 0:
+        #                     :(
         print("Sorry, no movies found in that genre.")
 
 # def movie list function
@@ -58,27 +60,39 @@ def movie_list(movies):
     print("\nFull Movie List")
     for movie in movies:
         print(f"{movie.get('Title')} ({movie.get('Genre')})")
+        #apolagize for flooding their screen 
     print("Sry bout da flood.")
 
 # def main function
 def main(movies):
+    #While loop it
     while True:
+        #Give them their options
         print("\nMain Menu:\nWould you like to:")
         user_choice = input("1. Search for a movie\n2. Get a recommendation\n3. See whole list\n4. Leave\nWhat would you like to do?: ")
-        
+        #if one
         if user_choice == '1':
+            #Call the function
             search(movies)
+        #if two
         elif user_choice == '2':
+            #call the other function
             recommendation(movies)
+            #if three
         elif user_choice == '3':
+            #etc etc u get the point
             movie_list(movies)
         elif user_choice == '4':
+            #close it (But say cya or smth)
             print("Byeeeeeeeeeeee!")
             break
+        #now if they're trolling:
         else:
+            #Tell them their a failure
             print("Invalid choice, try again.")
 
 # start the program
 movie_data = load_movies('movies.csv')
 if movie_data:
+    #Now start the thing!
     main(movie_data)
