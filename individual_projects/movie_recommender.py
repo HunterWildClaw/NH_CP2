@@ -1,71 +1,98 @@
-# NH 2nd Move recommender
+# NH 2nd Movie recommender
 #import csv
 import csv
 
-#Welcome the user
-print("Welcome to my movie recommender!")
+# def read movies function
+def load_movies(filename):
+    #Make the movies variable
+    movies = []
+    #Try and accept
+    try:
+        with open("individual_projects/movies.csv", 'r') as file:
+            # DictReader uses the first row of your CSV as keys for each movie dictionary (I looked it up ;)
+            reader = csv.DictReader(file)
+            #for every row in the file:
+            for row in reader:
+                #add it to the movies variable
+                movies.append(row)
+            #If I messed up and the file don't exist:
+    except FileNotFoundError:
+        #Tell the user that the program failed :(
+        print(f"{filename} not found.")
+    #return movies
+    return movies
 
-# read the movie list
-def read_movies():
-    with open("individual_projects\\movies_list.csv", "r") as movies:
-        reader=csv.reader(movies)
-        header=next(reader)
-        movies=[]
-        for line in reader:
-            movies.append(
-                {
-                    header[0]: line[0].strip(),
-                    header[1]: line[1].strip(),
-                    header[2]: line[2].strip(),
-                    header[3]: line[3].strip(),
-                    header[4]: int(line[4].strip()),
-                    header[5]: line[5].strip()
-                }
-            )
-        
-        return movies
+# def search function
+def search(movies):
+    #Make the search query
+    query = input("Give title, genre, actors, or movie director: ").lower()
+    #Set it to false
+    found = False
+    #Give em their results
+    print("\nSearch Results\n")
+    for movie in movies:
+        # check every value in the movie's dictionary (title, genre, etc.)
+        if any(query in str(value).lower() for value in movie.values()):
+            print(f"Title: {movie.get('Title')} | Genre: {movie.get('Genre')}")
+            found = True
+    if not found:
+        print("No matching movies found.")
 
-#make main function
-def main():
-    movies=read_movies()
-    #while loop it
+# def movie recommender
+def recommendation(movies):
+    #Ask what genre they want
+    genre_choice = input("What genre do you like? (e.g., Action, Comedy): ").lower()
+    print(f"\nRecommended {genre_choice.capitalize()} Movies")
+    count = 0
+    for movie in movies:
+        # Checks if the user's genre is inside the 'genres' column
+        if genre_choice in movie.get('Genre', '').lower():
+            print(f"- {movie.get('Title')}")
+            count += 1
+            if count >= 5: # Limit recommendations to 5 to avoid flooding
+                break
+    if count == 0:
+        #                     :(
+        print("Sorry, no movies found in that genre.")
+
+# def movie list function
+def movie_list(movies):
+    print("\nFull Movie List")
+    for movie in movies:
+        print(f"{movie.get('Title')} ({movie.get('Genre')})")
+        #apolagize for flooding their screen 
+    print("Sry bout da flood.")
+
+# def main function
+def main(movies):
+    #While loop it
     while True:
         #Give them their options
-        user_choice = input("Here are your options:\nWould you like to\n1. Search for a movie\n2. Get a recommendation\n3. See whole list\n4. Leave\nWhat would you like to do?: ")
-        #If they choose 1
-        if user_choice=='1':
-            #initiate the search function
+        print("\nMain Menu:\nWould you like to:")
+        user_choice = input("1. Search for a movie\n2. Get a recommendation\n3. See whole list\n4. Leave\nWhat would you like to do?: ")
+        #if one
+        if user_choice == '1':
+            #Call the function
             search(movies)
-        #if user chose 2
-        elif user_choice=='2':
-            #initiate the recommender function
+        #if two
+        elif user_choice == '2':
+            #call the other function
             recommendation(movies)
-        # If user chose three
-        elif user_choice=='3':
-            #activate list function
+            #if three
+        elif user_choice == '3':
+            #etc etc u get the point
             movie_list(movies)
-            #If they chose 4 then leave the loop
-        elif user_choice=='4':
+        elif user_choice == '4':
+            #close it (But say cya or smth)
             print("Byeeeeeeeeeeee!")
             break
+        #now if they're trolling:
+        else:
+            #Tell them their a failure
+            print("Invalid choice, try again.")
 
-
-#def search function
-def search(movies):
-    #Get user input
-    search=input("Give title, genre, actors, or movie director: ")
-    for i in movies:
-        if search in movies:
-            print(i)
-
-
-#Def recommender function
-def recommendation(movies):
-    print("sup")
-
-
-# Def movie lister function
-def movie_list(movies):
-    for i in movies:
-        print(i)
-main()
+# start the program
+movie_data = load_movies('movies.csv')
+if movie_data:
+    #Now start the thing!
+    main(movie_data)
