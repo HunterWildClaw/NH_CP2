@@ -12,7 +12,7 @@ def load_movies(filename):
             for row in reader:
                 movies.append(row)
     except FileNotFoundError:
-        print(f"Error: {filename} not found.")
+        print(f"{filename} not found.")
     return movies
 
 <<<<<<< HEAD
