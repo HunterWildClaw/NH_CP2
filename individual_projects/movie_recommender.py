@@ -2,48 +2,31 @@
 #import csv
 import csv
 
-# def load movies function
+# def read movies function
 def load_movies(filename):
+    #Make the movies variable
     movies = []
+    #Try and accept
     try:
         with open("individual_projects/movies.csv", 'r') as file:
-            # DictReader uses the first row of your CSV as keys for each movie dictionary
+            # DictReader uses the first row of your CSV as keys for each movie dictionary (I looked it up ;)
             reader = csv.DictReader(file)
+            #for every row in the file:
             for row in reader:
+                #add it to the movies variable
                 movies.append(row)
+            #If I messed up and the file don't exist:
     except FileNotFoundError:
+        #Tell the user that the program failed :(
         print(f"{filename} not found.")
+    #return movies
     return movies
 
-<<<<<<< HEAD
-# read the movie list
-def read_movies():
-    with open("individual_projects\movies_list.csv", "r") as movies:
-        reader=csv.reader(movies)
-        header=next(reader)
-        movies=[]
-        for line in reader:
-            movies.append(
-                {
-                    header[0]: line[0].strip(),
-                    header[1]: line[1].strip(),
-                    header[2]: line[2].strip(),
-                    header[3]: line[3].strip(),
-                    header[4]: int(line[4].strip()),
-                    header[5]: line[5].strip()
-                }
-            )
-        
-        return movies
-
-#make main function
-def main():
-    movies=read_movies()
-    #while loop it
-=======
-# 2. def search function
+# def search function
 def search(movies):
+    #Make the search query
     query = input("Give title, genre, actors, or movie director: ").lower()
+    #Set it to false
     found = False
     print("\nSearch Results\n")
     for movie in movies:
@@ -79,7 +62,6 @@ def movie_list(movies):
 
 # def main function
 def main(movies):
->>>>>>> ae5f18a (I finished movie recommender)
     while True:
         print("\nMain Menu:\nWould you like to:")
         user_choice = input("1. Search for a movie\n2. Get a recommendation\n3. See whole list\n4. Leave\nWhat would you like to do?: ")
@@ -96,32 +78,7 @@ def main(movies):
         else:
             print("Invalid choice, try again.")
 
-<<<<<<< HEAD
-
-#def search function
-def search(movies):
-    #Get user input
-    search=input("Give title, genre, actors, or movie director: ")
-    for i in movies:
-        if search in movies:
-            print(i)
-
-
-#Def recommender function
-def recommendation(movies):
-    print("sup")
-
-
-# Def movie lister function
-def movie_list(movies):
-    for i in movies:
-        print(i)
-
-
-main()
-=======
 # start the program
 movie_data = load_movies('movies.csv')
 if movie_data:
     main(movie_data)
->>>>>>> ae5f18a (I finished movie recommender)
