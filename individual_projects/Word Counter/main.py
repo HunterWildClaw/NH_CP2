@@ -15,7 +15,7 @@ def main():
         print("4. View timestamp of doc")
         print("5. Exit")
         
-        choice = input("Choose an option (1-4): ").strip()
+        choice = input("Choose an option (1-5): ").strip()
         
         if choice=="1":
             create_document()
