@@ -1,7 +1,7 @@
 # NH 2nd main file for word counter
 #Import all the functions from the other tab
-from file_handling import create_document, write_document, view_document, ensure_docs_dir
-from time_handling import get_current_iso_time
+from file_handling import*
+from time_handling import*
 #def main function
 def main():
     """Main program loop."""
