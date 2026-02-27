@@ -2,26 +2,36 @@
 #import turtle
 import turtle as e
 
+#Set the settings
+t=e.Turtle()
+s=e.Screen()
+t.hideturtle()
+t.penup()
+#Have turtle go to 0,0
+t.goto(0,0)
+#Make turtle infinitely fast
+t.speed(0)
+t.pendown()
+t.setheading(180)
+
 #Make the function
-def triangle(depth):
-    t=e.Turtle()
-    s=e.Screen()
-    t.hideturtle()
+def triangle(depth, length):
+    t.forward(length/2)
+    t.right(120)
+    t.forward(length)
+    t.right(120)
+    t.forward(length)
+    t.right(120)
+    t.forward(length/2)
+    t.right(60)
     t.penup()
-    #Have turtle go to 0,0
-    t.goto(0,0)
-    #Make turtle infinitely fast
-    t.speed(0)
+    t.forward(length/4)
     t.pendown()
-    t.setheading(180)
-    t.forward(300)
-    t.right(120)
-    t.forward(600)
-    t.right(120)
-    t.forward(600)
-    t.right(120)
-    t.forward(300)
-    e.done()
-    if depth >0:
-        
-triangle(int(input("Enter recursion depth (0-5): ")))
+
+    if depth > 0:
+        triangle(depth-1, length/2)
+    else:
+        pass
+
+triangle("""int(input("Enter recursion depth (0-5): ")), int(input("And how big would you like the triangle to be? (Side length): "))""")
+e.done()
