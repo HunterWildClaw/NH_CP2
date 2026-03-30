@@ -210,14 +210,14 @@ class Triangle(Shape):
         return "Triangle: Area = 0.5 * b * h, Perimeter = a + b + c"
 
 class GeometryCalculator:
-    # - Maintain a list of all created shapes
-    # - Define CSV file path for saving data
-    # - Validate user numerical input with error handling
-    # - Save all shapes to CSV file
-    # - Create shapes based on user selection
-    # - Sort shapes by area or perimeter
-    # - Display main menu and handle user commands
-    # - Run main event loop
+    # Maintain a list of all created shapes
+    # Define CSV file path for saving data
+    # Validate user numerical input with error handling
+    # Save all shapes to CSV file
+    # Create shapes based on user selection
+    # Sort shapes by area or perimeter
+    # Display main menu and handle user commands
+    # Run main event loop
 
     def __init__(self):
         #Initialize calculator
