@@ -1,0 +1,17 @@
+# Character Manager
+
+## Description
+This Python script (`char_manager.py`) provides functionality to manage characters, such as creating, updating, and deleting character profiles. It is part of the NH_CP2 project.
+
+## Features
+- Create new characters 🆕
+- Edit existing characters ✏️
+- Delete characters ❌
+- View character details 👀
+
+## Installation
+Ensure you have Python installed. No additional stuff is required.
+
+## Usage
+Run the code after installing Python.
+Follow the on-screen prompts to manage characters.
