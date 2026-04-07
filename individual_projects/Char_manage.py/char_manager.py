@@ -145,9 +145,47 @@ class StatisticalAnalyzer:
 class RandomGenerator:
     @staticmethod
     def create_quest():
-        # Generates a random procedural quest
-        # Return a formatted quest string using Faker
-        return f"QUEST: {fake.job()} {fake.name()} needs you to travel to {fake.city()} to retrieve a {fake.color_name()} artifact."
+        # Fantasy-focused procedural quest generator with emphasis on monster-hunting
+        creatures = [
+            "goblin warband", "orc chieftain", "troll", "wyvern", "skeleton horde",
+            "wight", "band of gnolls", "cave wyrm", "shadow stalker", "necromancer"
+        ]
+        places = [
+            "the Ruined Keep", "Eldermire Forest", "Blackfen Caves", "the Sunken Temple",
+            "Ironcliff Ridge", "the Misty Marshes", "Crimson Hollow", "Frostfen Maw"
+        ]
+        rewards = [
+            "gold coins", "an enchanted sword", "a vial of dragon's blood",
+            "an ancient amulet", "a favor from the guild", "a map to hidden treasure"
+        ]
+        quest_givers = ["a desperate mayor", "a cloaked stranger", "a village elder",
+                        "a battle-worn captain", "a trembling innkeeper", "a guildmaster"]
+
+        templates = [
+            "slay the {creature} that has been ravaging {place}",
+            "hunt down the {creature} and bring back proof of its defeat",
+            "clear {place} of a nest of {creature}",
+            "rescue villagers taken by a {creature} in {place}",
+            "escort a caravan through {place} while it is hunted by {creature}",
+            "track and defeat the {creature} believed to be lairing beneath {place}"
+        ]
+
+        creature = random.choice(creatures)
+        place = random.choice(places)
+        reward = random.choice(rewards)
+        giver = random.choice(quest_givers)
+        template = random.choice(templates)
+        gold = random.randint(50, 600)
+
+        # Assemble flavorful quest text (use Faker for a proper name)
+        giver_name = fake.name()
+        task = template.format(creature=creature, place=place)
+
+        return (
+            f"QUEST: {giver_name}, {giver}, beseeches you to {task}. "
+            f"Stakes: the people of {fake.city()} are at risk. "
+            f"Reward: {gold} gold and {reward}."
+        )
 
 # --- 3. MAIN CHARACTER MANAGER ---
 # Define CharacterManager class to manage characters and interactions
@@ -207,41 +245,95 @@ class CharacterManager:
         for i, r in enumerate(self.races, 1): print(f"{i}. {r.name}")
         # Get race choice
         race = self.races[int(input())-1]
-        
+
         # Display class options
         print("Select Class (1-3):")
         for i, c in enumerate(self.classes, 1): print(f"{i}. {c.name}")
         # Get class choice
         cls = self.classes[int(input())-1]
-        
+
+        # Choose a primary skill
+        skill = random.choice(self.skills)
+
         # Roll base stats
         base_stats = self.attribute_roller()
         # Calculate final stats with modifiers
         final_stats = {s: base_stats[s] + race.mods[s] + cls.mods[s] for s in base_stats}
-        
-        # Create Character object
-        char = Character(name, race, cls, random.choice(self.skills), final_stats)
+
+        # Construct a coherent backstory using a small template + Faker details
+        city = fake.city()
+        mentor = fake.name()
+        incidents = [
+            "a band of raiders attacked their village",
+            "a mysterious illness swept through the town",
+            "they discovered an old relic in the nearby ruins",
+            "their mentor vanished on a dangerous mission"
+        ]
+        hooks = [
+            "they earned a scar that serves as a reminder",
+            "they vowed never to return home empty-handed",
+            "they learned to rely on wit over strength",
+            "they developed a deep distrust of authority"
+        ]
+        inc = random.choice(incidents)
+        hook = random.choice(hooks)
+        primary_name = name.split()[0]
+
+        backstory = (
+            f"{name} was born in {city} among {race.name.lower()} communities. "
+            f"From a young age {primary_name} showed an aptitude for {skill.lower()}, "
+            f"and apprenticed under {mentor}, a seasoned {cls.name.lower()}. "
+            f"One day {inc}, and as a result {hook}. "
+            f"These events set {primary_name} on a path in search of {random.choice(['justice','fortune','knowledge','redemption'])}."
+        )
+
+        # Create Character object with the crafted backstory and known location
+        char = Character(name, race, cls, skill, final_stats, backstory=backstory, location=city)
         # Add to characters dictionary
         self.characters[name] = char
-        # Print success message
-        print(f"✅ {name} created! Bio: {char.backstory[:60]}...")
+        # Print success message with a short bio preview
+        print(f"✅ {name} created! Bio: {char.backstory[:120]}...")
 
     def bulk_generate(self, count):
-        # For each count
+        # Fantasy name generator helpers
+        syllables = ["al","ar","in","el","or","ur","an","eth","mar","thal","dir","ryn","vor","sil","kas","dor","wyn","mir","gal","bel","ion","sae","kae","zen","sha","tra","lok","grim","val"]
+        endings = ["a","e","i","o","u","us","ar","on","ir","is","yn","ath"]
+        titles = ["Lord ", "Lady ", "Sir ", "Dame "]
+
+        def make_name():
+            p = random.random()
+            # Single-name (no last name) ~40%
+            if p < 0.4:
+                parts = random.randint(2, 3)
+                name = "".join(random.choice(syllables) for _ in range(parts)).capitalize()
+            # First + Last ~40%
+            elif p < 0.8:
+                first_parts = random.randint(1, 2)
+                last_parts = random.randint(1, 2)
+                first = "".join(random.choice(syllables) for _ in range(first_parts)).capitalize()
+                last = "".join(random.choice(syllables) for _ in range(last_parts)).capitalize() + random.choice(endings)
+                name = f"{first} {last}"
+            # Names with an apostrophe ~10%
+            elif p < 0.9:
+                first = "".join(random.choice(syllables) for _ in range(1)).capitalize()
+                second = "".join(random.choice(syllables) for _ in range(1))
+                name = f"{first}'{second}"
+            # Hyphenated or titled ~10%
+            else:
+                a = "".join(random.choice(syllables) for _ in range(random.randint(1,2))).capitalize()
+                b = "".join(random.choice(syllables) for _ in range(1)).capitalize()
+                name = f"{a}-{b}"
+                if random.random() < 0.15:
+                    name = random.choice(titles) + name
+            return name
+
         for _ in range(count):
-            # Randomly select race
             race = random.choice(self.races)
-            # Randomly select class
             cls = random.choice(self.classes)
-            # Generate random stats with modifiers
-            stats = {s: random.randint(3,18) + race.mods[s] + cls.mods[s] for s in race.mods}
-            # Create Character object
-            char = Character(fake.name(), race, cls, random.choice(self.skills), stats)
-            # Add to characters dictionary
+            stats = {s: random.randint(3, 18) + race.mods[s] + cls.mods[s] for s in race.mods}
+            char = Character(make_name(), race, cls, random.choice(self.skills), stats)
             self.characters[char.name] = char
-            # Print generation message
             print(f"Generated: {char.name}")
-        # Print total generated
         print(f"🎲 Generated {count} procedural characters.")
 
     def export_data(self):
