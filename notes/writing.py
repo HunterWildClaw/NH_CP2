@@ -1,4 +1,4 @@
-
+# NH 2nd writing to csv files notes
 """with open("notes\\sample.txt", 'a') as file:
     file.write("\nJoe\n")
     file.write("Israel\n")
