@@ -74,7 +74,43 @@ class MorsePage(ProjectPage):
 
 class WoWPage(ProjectPage):
     def __init__(self, parent, controller):
-        super().__init__(parent, controller, "WoW (Blank)")
+        # Initialize the base ProjectPage with the title
+        super().__init__(parent, controller, "WoW Project Documentation")
+        
+        # Create a scrollable text area for the README content
+        self.readme_display = scrolledtext.ScrolledText(self, wrap=tk.WORD, width=60, height=20, font=("Segoe UI", 11))
+        self.readme_display.pack(pady=(60, 20), padx=20, fill="both", expand=True)
+
+        # Define styles (tags) for Markdown-like formatting
+        self.readme_display.tag_configure("header", font=("Segoe UI", 16, "bold"), foreground="#2c3e50")
+        self.readme_display.tag_configure("subhead", font=("Segoe UI", 12, "bold"), foreground="#34495e")
+        self.readme_display.tag_configure("code", font=("Consolas", 10), background="#f4f4f4")
+        self.readme_display.tag_configure("bullet", lmargin1=20, lmargin2=30)
+
+        self.insert_readme_content()
+        self.readme_display.config(state="disabled") # Make it read-only
+
+    def insert_readme_content(self):
+        # Content from the WoW README
+        content = [
+            ("WoW: Python RPG Module ⚔️\n", "header"),
+            ("This is a World of Warcraft-inspired RPG engine built with Python.\n\n", None),
+            ("🕹️ Core Engine Features\n", "subhead"),
+            ("• Character Customization: Support for 12 Races and 11 Classes.\n", "bullet"),
+            ("• Dynamic Combat: Turn-based system with physical and mana abilities.\n", "bullet"),
+            ("• Loot & Economy: Marketplace and drop tables.\n\n", "bullet"),
+            ("🛠️ Technical Stack\n", "subhead"),
+            ("• Languages: Python 3.12\n", "bullet"),
+            ("• Architecture: OOP using dataclasses and enums.\n\n", "bullet"),
+            ("🚀 Getting Started\n", "subhead"),
+            ("python personal_portfolio.py", "code"),
+            ("\n\n(Documentation provided via WoWPage integration)", None)
+        ]
+
+        for text, tag in content:
+            self.readme_display.insert(tk.END, text, tag)
+
+
 
 class LibraryPage(ProjectPage):
     def __init__(self, parent, controller):
