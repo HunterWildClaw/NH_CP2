@@ -1,5 +1,6 @@
 # NH 2nd personal portfolio
 import tkinter as tk
+from tkinter import scrolledtext
 
 class MyProjectsApp:
     def __init__(self, root):
