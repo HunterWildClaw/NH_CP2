@@ -1,93 +1,122 @@
-# NH pygame experiment
 import pygame
+import random
 
-# 1. Initialize Pygame
+# --- 1. Setup & Constants ---
 pygame.init()
 
-# Constants
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 FPS = 60
 GRAVITY = 0.8
 JUMP_HEIGHT = -16
 PLAYER_SPEED = 5
+AUTO_SCROLL_SPEED = 2  # The screen moves left by 2 pixels every frame
 
 # Colors
-WHITE = (255, 255, 255)
-BLUE = (0, 0, 255)
-GREEN = (0, 255, 0)
 SKY_BLUE = (135, 206, 235)
+PLAYER_COLOR = (0, 0, 255)
+PLATFORM_COLOR = (34, 139, 34)
 
-# Setup Window
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Basic Pygame Platformer")
+pygame.display.set_caption("Auto-Scrolling Platformer")
 clock = pygame.time.Clock()
 
-# Player Class
+# --- 2. Classes ---
 class Player:
     def __init__(self):
-        self.rect = pygame.Rect(100, 500, 40, 40)
+        self.rect = pygame.Rect(100, 300, 40, 40)
         self.vel_y = 0
         self.on_ground = False
 
-    def update(self, platforms):
-        # Movement
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            self.rect.x -= PLAYER_SPEED
-        if keys[pygame.K_RIGHT]:
-            self.rect.x += PLAYER_SPEED
+    def move(self, platforms):
+        dx = 0
+        dy = 0
         
-        # Jump logic
-        if keys[pygame.K_SPACE] and self.on_ground:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            dx -= PLAYER_SPEED
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            dx += PLAYER_SPEED
+        
+        if (keys[pygame.K_SPACE] or keys[pygame.K_UP] or keys[pygame.K_w]) and self.on_ground:
             self.vel_y = JUMP_HEIGHT
             self.on_ground = False
 
-        # Apply Gravity
         self.vel_y += GRAVITY
-        self.rect.y += self.vel_y
+        dy += self.vel_y
 
-        # Collision with Platforms
+        # Collision Handling
         self.on_ground = False
+        
+        # X Collision
+        self.rect.x += dx
         for plat in platforms:
             if self.rect.colliderect(plat):
-                if self.vel_y > 0: # Falling down
+                if dx > 0: self.rect.right = plat.left
+                if dx < 0: self.rect.left = plat.right
+
+        # Y Collision
+        self.rect.y += dy
+        for plat in platforms:
+            if self.rect.colliderect(plat):
+                if self.vel_y > 0:
                     self.rect.bottom = plat.top
                     self.vel_y = 0
                     self.on_ground = True
-                elif self.vel_y < 0: # Hitting ceiling
+                elif self.vel_y < 0:
                     self.rect.top = plat.bottom
                     self.vel_y = 0
 
     def draw(self):
-        pygame.draw.rect(screen, BLUE, self.rect)
+        pygame.draw.rect(screen, PLAYER_COLOR, self.rect)
 
-# 2. Main Game Loop
+# --- 3. Functions ---
+def spawn_platforms(start_x, count):
+    new_plats = []
+    current_x = start_x
+    for _ in range(count):
+        width = random.randint(100, 250)
+        current_x += random.randint(150, 300)
+        y = random.randint(200, 500)
+        new_plats.append(pygame.Rect(current_x, y, width, 20))
+    return new_plats
+
+# --- 4. Main Game Loop ---
 player = Player()
-# Create floor and some floating platforms
-platforms = [
-    pygame.Rect(0, 550, 800, 50), # Floor
-    pygame.Rect(200, 400, 150, 20),
-    pygame.Rect(450, 300, 150, 20),
-    pygame.Rect(100, 200, 100, 20)
-]
+platforms = [pygame.Rect(0, 550, 800, 50)] 
+platforms += spawn_platforms(400, 10)
 
 running = True
 while running:
-    # Event Handling
+    clock.tick(FPS)
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    # Update Logic
-    player.update(platforms)
+    # 1. Constant Auto-Scroll: Move all platforms left
+    for plat in platforms:
+        plat.x -= AUTO_SCROLL_SPEED
+    
+    # 2. Update Player
+    player.move(platforms)
 
-    # Rendering
+    # 3. Handle Screen Boundaries (Optional: Keep player from disappearing left)
+    if player.rect.left < 0:
+        player.rect.left = 0
+    
+    # 4. Infinite Generation Logic
+    if platforms[-1].x < SCREEN_WIDTH + 500:
+        platforms += spawn_platforms(platforms[-1].x, 5)
+
+    # 5. Clean up old platforms
+    platforms = [p for p in platforms if p.right > -100]
+
+    # Draw everything
     screen.fill(SKY_BLUE)
     for plat in platforms:
-        pygame.draw.rect(screen, GREEN, plat)
+        pygame.draw.rect(screen, PLATFORM_COLOR, plat)
     player.draw()
 
     pygame.display.update()
-    clock.tick(FPS)
 
 pygame.quit()
