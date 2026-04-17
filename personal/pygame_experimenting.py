@@ -9,7 +9,7 @@ FPS = 60
 GRAVITY = 1
 JUMP_HEIGHT = -20
 PLAYER_SPEED = 5
-AUTO_SCROLL_SPEED = 5  # The screen moves left by 2 pixels every frame
+AUTO_SCROLL_SPEED = 5
 
 # Colors
 SKY_BLUE = (135, 206, 235)
@@ -66,6 +66,11 @@ class Player:
                     self.rect.top = plat.bottom
                     self.vel_y = 0
 
+        if keys[pygame.K_r]:
+            self.rect = pygame.Rect(100, 300, 40, 40)
+            self.vel_y = 0
+            self.on_ground = False
+
     def draw(self):
         pygame.draw.rect(screen, PLAYER_COLOR, self.rect)
 
@@ -99,16 +104,12 @@ while running:
     
     # 2. Update Player
     player.move(platforms)
-
-    # 3. Handle Screen Boundaries (Optional: Keep player from disappearing left)
-    if player.rect.left < 0:
-        player.rect.left = 0
     
-    # 4. Infinite Generation Logic
+    # 3. Infinite Generation Logic
     if platforms[-1].x < SCREEN_WIDTH + 500:
         platforms += spawn_platforms(platforms[-1].x, 5)
 
-    # 5. Clean up old platforms
+    # 4. Clean up old platforms
     platforms = [p for p in platforms if p.right > -100]
 
     # Draw everything
