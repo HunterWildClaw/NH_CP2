@@ -6,10 +6,10 @@ pygame.init()
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
 FPS = 60
-GRAVITY = 0.8
-JUMP_HEIGHT = -16
+GRAVITY = 1
+JUMP_HEIGHT = -20
 PLAYER_SPEED = 5
-AUTO_SCROLL_SPEED = 2  # The screen moves left by 2 pixels every frame
+AUTO_SCROLL_SPEED = 5  # The screen moves left by 2 pixels every frame
 
 # Colors
 SKY_BLUE = (135, 206, 235)
