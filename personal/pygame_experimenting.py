@@ -67,10 +67,20 @@ class Player:
                     self.vel_y = 0
 
         if keys[pygame.K_r]:
+            # Reset player state
             self.rect = pygame.Rect(100, 300, 40, 40)
             self.vel_y = 0
             self.on_ground = False
 
+            # Reset platforms to starting state and return the new list
+            platforms = [pygame.Rect(0, 550, 800, 50)]
+            platforms += spawn_platforms(400, 10)
+
+            # stop further movement processing this frame
+            return platforms
+
+        return platforms
+            
     def draw(self):
         pygame.draw.rect(screen, PLAYER_COLOR, self.rect)
 
@@ -101,10 +111,10 @@ while running:
     # 1. Constant Auto-Scroll: Move all platforms left
     for plat in platforms:
         plat.x -= AUTO_SCROLL_SPEED
-    
     # 2. Update Player
-    player.move(platforms)
+    platforms = player.move(platforms)
     
+    # 3. Infinite Generation Logic
     # 3. Infinite Generation Logic
     if platforms[-1].x < SCREEN_WIDTH + 500:
         platforms += spawn_platforms(platforms[-1].x, 5)
