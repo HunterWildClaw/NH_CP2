@@ -1,7 +1,6 @@
 import pygame
 import random
 
-# --- 1. Setup & Constants ---
 pygame.init()
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
@@ -9,9 +8,9 @@ FPS = 60
 GRAVITY = 1
 JUMP_HEIGHT = -20
 PLAYER_SPEED = 5
-AUTO_SCROLL_SPEED = 4
+AUTO_SCROLL_SPEED = 6
 
-# Colors
+
 SKY_BLUE = (135, 206, 235)
 PLAYER_COLOR = (0, 0, 255)
 PLATFORM_COLOR = (34, 139, 34)
@@ -20,7 +19,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Auto-Scrolling Platformer")
 clock = pygame.time.Clock()
 
-# --- 2. Classes ---
+
 class Player:
     def __init__(self):
         self.rect = pygame.Rect(100, 300, 40, 40)
@@ -84,7 +83,6 @@ class Player:
     def draw(self):
         pygame.draw.rect(screen, PLAYER_COLOR, self.rect)
 
-# --- 3. Functions ---
 def spawn_platforms(start_x, count):
     new_plats = []
     current_x = start_x
@@ -95,7 +93,6 @@ def spawn_platforms(start_x, count):
         new_plats.append(pygame.Rect(current_x, y, width, 20))
     return new_plats
 
-# --- 4. Main Game Loop ---
 player = Player()
 platforms = [pygame.Rect(0, 550, 800, 50)] 
 platforms += spawn_platforms(400, 10)
@@ -108,21 +105,16 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    # 1. Constant Auto-Scroll: Move all platforms left
     for plat in platforms:
         plat.x -= AUTO_SCROLL_SPEED
-    # 2. Update Player
+
     platforms = player.move(platforms)
     
-    # 3. Infinite Generation Logic
-    # 3. Infinite Generation Logic
     if platforms[-1].x < SCREEN_WIDTH + 500:
         platforms += spawn_platforms(platforms[-1].x, 5)
 
-    # 4. Clean up old platforms
     platforms = [p for p in platforms if p.right > -100]
 
-    # Draw everything
     screen.fill(SKY_BLUE)
     for plat in platforms:
         pygame.draw.rect(screen, PLATFORM_COLOR, plat)
