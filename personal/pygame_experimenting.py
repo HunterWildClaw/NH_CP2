@@ -25,7 +25,7 @@ class Player:
         self.rect = pygame.Rect(100, 300, 40, 40)
         self.vel_y = 0
         self.on_ground = False
-
+    
     def move(self, platforms):
         dx = 0
         dy = 0
@@ -33,9 +33,11 @@ class Player:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             dx -= PLAYER_SPEED
+            
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             dx += PLAYER_SPEED
-        
+        if keys[pygame.K_e]:
+            dx =+ 20
         if (keys[pygame.K_SPACE] or keys[pygame.K_UP] or keys[pygame.K_w]) and self.on_ground:
             self.vel_y = JUMP_HEIGHT
             self.on_ground = False
