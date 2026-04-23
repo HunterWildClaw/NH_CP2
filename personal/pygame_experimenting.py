@@ -65,6 +65,11 @@ class Player:
                     self.rect.top = plat.bottom
                     self.vel_y = 0
 
+        if keys[pygame.K_ESCAPE]:
+            self.rect = pygame.Rect(100, 300, 40, 40)
+            self.vel_y = 0
+            self.on_ground = False
+
         if keys[pygame.K_r]:
             # Reset player state
             self.rect = pygame.Rect(100, 300, 40, 40)
