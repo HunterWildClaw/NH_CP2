@@ -3,13 +3,12 @@ import random
 
 pygame.init()
 
-SCREEN_WIDTH, SCREEN_HEIGHT = 800, 600
+SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 1000
 FPS = 60
 GRAVITY = 1
 JUMP_HEIGHT = -20
-PLAYER_SPEED = 5
+PLAYER_SPEED = 6
 AUTO_SCROLL_SPEED = 5
-
 
 SKY_BLUE = (135, 206, 235)
 PLAYER_COLOR = (0, 0, 255)
@@ -100,13 +99,13 @@ def spawn_platforms(start_x, count):
     for _ in range(count):
         width = random.randint(100, 250)
         current_x += random.randint(150, 300)
-        y = random.randint(200, 500)
+        y = random.randint(250, 750)
         new_plats.append(pygame.Rect(current_x, y, width, 20))
     return new_plats
 
 player = Player()
 platforms = [pygame.Rect(0, 550, 800, 50)] 
-platforms += spawn_platforms(400, 10)
+platforms += spawn_platforms(700, 200)
 
 running = True
 while running:
