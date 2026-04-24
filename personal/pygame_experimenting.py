@@ -20,7 +20,7 @@ clock = pygame.time.Clock()
 
 
 class Player:
-    def __init__(self):
+    def __init__(self):      # x pos, y pos, x width, y height
         self.rect = pygame.Rect(100, 300, 40, 40)
         self.vel_y = 0
         self.on_ground = False
