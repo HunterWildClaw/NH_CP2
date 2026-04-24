@@ -8,7 +8,7 @@ FPS = 60
 GRAVITY = 1
 JUMP_HEIGHT = -20
 PLAYER_SPEED = 5
-AUTO_SCROLL_SPEED = 6
+AUTO_SCROLL_SPEED = 5
 
 
 SKY_BLUE = (135, 206, 235)
@@ -29,15 +29,19 @@ class Player:
     def move(self, platforms):
         dx = 0
         dy = 0
-        
+        direction=True
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             dx -= PLAYER_SPEED
-            
+            direction=False
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             dx += PLAYER_SPEED
+            direction=True
         if keys[pygame.K_e]:
-            dx =+ 20
+            if direction==True:
+                dx =+ 30
+            if direction==False:
+                dx -= 30
         if (keys[pygame.K_SPACE] or keys[pygame.K_UP] or keys[pygame.K_w]) and self.on_ground:
             self.vel_y = JUMP_HEIGHT
             self.on_ground = False
