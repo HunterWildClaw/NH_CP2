@@ -37,12 +37,12 @@ class Player:
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             dx += PLAYER_SPEED
             direction=True
-        if keys[pygame.K_e]:
+        if keys[pygame.K_SPACE]:
             if direction==True:
                 dx =+ 30
             if direction==False:
                 dx -= 30
-        if (keys[pygame.K_SPACE] or keys[pygame.K_UP] or keys[pygame.K_w]) and self.on_ground:
+        if keys[pygame.K_UP] or keys[pygame.K_w] and self.on_ground:
             self.vel_y = JUMP_HEIGHT
             self.on_ground = False
 
