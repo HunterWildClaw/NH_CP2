@@ -3,7 +3,7 @@ import random
 
 pygame.init()
 
-SCREEN_WIDTH, SCREEN_HEIGHT = 1200, 1000
+SCREEN_WIDTH, SCREEN_HEIGHT = 2560, 1440
 FPS = 60
 GRAVITY = 1
 JUMP_HEIGHT = -20
@@ -18,9 +18,8 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Auto-Scrolling Platformer")
 clock = pygame.time.Clock()
 
-
 class Player:
-    def __init__(self):      # x pos, y pos, x width, y height
+    def __init__(self):    # x pos, y pos, x width, y height
         self.rect = pygame.Rect(100, 300, 40, 40)
         self.vel_y = 0
         self.on_ground = False
