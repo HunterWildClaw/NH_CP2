@@ -3,7 +3,7 @@ import random
 
 pygame.init()
 
-SCREEN_WIDTH, SCREEN_HEIGHT = 2560, 1440
+SCREEN_WIDTH, SCREEN_HEIGHT = 2560, 1395
 FPS = 60
 GRAVITY = 1
 JUMP_HEIGHT = -20
@@ -43,6 +43,9 @@ class Player:
         if keys[pygame.K_UP] or keys[pygame.K_w] and self.on_ground:
             self.vel_y = JUMP_HEIGHT
             self.on_ground = False
+        if keys[pygame.K_DELETE]:
+            pygame.quit()
+            raise SystemExit
 
         self.vel_y += GRAVITY
         dy += self.vel_y
