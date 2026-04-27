@@ -1,5 +1,6 @@
 import pygame
 import random
+import time
 
 pygame.init()
 
@@ -29,20 +30,35 @@ class Player:
         dy = 0
         direction=True
         keys = pygame.key.get_pressed()
+
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             dx -= PLAYER_SPEED
             direction=False
+            
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             dx += PLAYER_SPEED
             direction=True
-        if keys[pygame.K_SPACE]:
-            if direction==True:
-                dx =+ 30
-            if direction==False:
-                dx -= 30
+        # Dash with cooldown (1 second by default)
+        if not hasattr(self, "dash_cooldown"):
+            self.dash_cooldown = 0
+
+        # cooldown each frame
+        if self.dash_cooldown > 0:
+            self.dash_cooldown -= 1
+
+        if keys[pygame.K_SPACE] and self.dash_cooldown == 0:
+            dash_amount = 500
+            if direction:
+                dx += dash_amount
+            else:
+                dx -= dash_amount
+            # set cooldown in frames (use FPS for ~1 second)
+            self.dash_cooldown = FPS
+
         if keys[pygame.K_UP] or keys[pygame.K_w] and self.on_ground:
             self.vel_y = JUMP_HEIGHT
             self.on_ground = False
+
         if keys[pygame.K_DELETE]:
             pygame.quit()
             raise SystemExit
