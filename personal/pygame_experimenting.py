@@ -24,18 +24,21 @@ class Player:
         self.rect = pygame.Rect(100, 300, 40, 40)
         self.vel_y = 0
         self.on_ground = False
+        self.dashing = False
+        self.dashTimer = 15
+        self.dashClock = 0
     
     def move(self, platforms):
         dx = 0
         dy = 0
         direction=True
-        keys = pygame.key.get_pressed()
+        keys = pygame.key.get_pressed()       
 
-        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+        if (keys[pygame.K_LEFT] or keys[pygame.K_a]) and not self.dashing:
             dx -= PLAYER_SPEED
             direction=False
             
-        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+        if (keys[pygame.K_RIGHT] or keys[pygame.K_d]) and not self.dashing:
             dx += PLAYER_SPEED
             direction=True
         # Dash with cooldown (1 second by default)
@@ -49,11 +52,19 @@ class Player:
         if keys[pygame.K_SPACE] and self.dash_cooldown == 0:
             dash_amount = 500
             if direction:
-                dx += dash_amount
+                self.dashing = True
+                self.dashClock = 0
             else:
                 dx -= dash_amount
             # set cooldown in frames (use FPS for ~1 second)
             self.dash_cooldown = FPS
+
+        if self.dashing:
+            dx += 34
+            self.dashClock += 1
+
+            if self.dashClock >= self.dashTimer:
+                self.dashing = False
 
         if keys[pygame.K_UP] or keys[pygame.K_w] and self.on_ground:
             self.vel_y = JUMP_HEIGHT
@@ -128,6 +139,8 @@ platforms += spawn_platforms(700, 200)
 running = True
 while running:
     clock.tick(FPS)
+
+    score=+1
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
