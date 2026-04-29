@@ -1,6 +1,5 @@
 import pygame
 import random
-import time
 
 pygame.init()
 
@@ -151,7 +150,7 @@ while running:
 
     platforms = player.move(platforms)
     
-    if platforms[-1].x < SCREEN_WIDTH + 500:
+    if platforms[-1].x < SCREEN_WIDTH:
         platforms += spawn_platforms(platforms[-1].x, 5)
 
     platforms = [p for p in platforms if p.right > -100]
