@@ -23,3 +23,12 @@ This is a World of Warcraft-inspired RPG engine built with Python. It features a
 - [ ] **GUI Integration**: Porting the `print()` and `input()` terminal logic into Tkinter Text widgets and Buttons.
 - [ ] **Visual Inventory**: Replacing the list-based inventory with a grid of item icons.
 - [ ] **Save/Load**: Implementing `json` or `sqlite3` to save character progress.
+
+       /\
+      /  \
+     /    \
+    /______\
+   / \|||||/\
+  /   \|||/  \
+ /     \|/    \
+/_______V______\
