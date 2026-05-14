@@ -4,7 +4,7 @@ from pynput.mouse import Button, Controller
 from pynput.keyboard import Listener, KeyCode
 
 # Configuration
-delay = 0.001  # Fast clicking
+delay = 0.0001  # Fast clicking
 button = Button.left
 start_stop_key = KeyCode(char='s') # Press 's' to start/stop
 exit_key = KeyCode(char='e')       # Press 'e' to exit program
